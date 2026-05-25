@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GreenDigest - Valorisation des biodéchets</title>
+  <style>
+    :root {
+      --green-dark: #123d24;
+      --green: #2f8f46;
+      --green-light: #dff3e4;
+      --beige: #f6f2e9;
+      --brown: #6b4f2a;
+      --text: #1f2a24;
+      --white: #ffffff;
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: var(--beige);
+      line-height: 1.6;
+    }
+
+    header {
+      background: rgba(18, 61, 36, 0.96);
+      color: var(--white);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    nav {
+      max-width: 1150px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 230px;
+    }
+
+    .brand-logo {
+      width: 62px;
+      height: 62px;
+      flex: 0 0 62px;
+      border-radius: 18px;
+      background: #ffffff;
+      padding: 5px;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-text strong {
+      font-size: 1.35rem;
+      letter-spacing: 0.3px;
+    }
+
+    .brand-text span {
+      color: #a9ef98;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    .hero {
+      min-height: 88vh;
+      display: grid;
+      place-items: center;
+      padding: 70px 20px;
+      background:
+        linear-gradient(rgba(18, 61, 36, 0.78), rgba(18, 61, 36, 0.78)),
+        radial-gradient(circle at top left, #68bf63, transparent 35%),
+        linear-gradient(135deg, #17482b, #1b5d34 45%, #714c22);
+      color: var(--white);
+      text-align: center;
+    }
+
+    .hero-content {
+      max-width: 900px;
+    }
+
+    .hero-logo-frame {
+      width: min(320px, 75vw);
+      height: 210px;
+      margin: 0 auto 24px;
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 26px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-logo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      padding: 8px 16px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      line-height: 1.05;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 span {
+      color: #a9ef98;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 760px;
+      margin: 0 auto 30px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 22px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary {
+      background: #8ee28b;
+      color: var(--green-dark);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255, 255, 255, 0.7);
+    }
+
+    section {
+      padding: 75px 20px;
+    }
+
+    .container {
+      max-width: 1150px;
+      margin: auto;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 42px;
+    }
+
+    .section-title h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--green-dark);
+      margin-bottom: 10px;
+    }
+
+    .section-title p {
+      max-width: 730px;
+      margin: auto;
+      color: #506158;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      background: var(--white);
+      padding: 26px;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      color: var(--green-dark);
+      margin-bottom: 10px;
+      font-size: 1.35rem;
+    }
+
+    .icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .problem {
+      background: var(--white);
+    }
+
+    .highlight {
+      background: var(--green-light);
+      border-left: 6px solid var(--green);
+      padding: 24px;
+      border-radius: 16px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-top: 25px;
+    }
+
+    .process {
+      background: #eef7ef;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+      counter-reset: step;
+    }
+
+    .step {
+      background: var(--white);
+      padding: 22px;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      display: inline-grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--green);
+      color: white;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .schema {
+      margin-top: 35px;
+      background: var(--green-dark);
+      color: var(--white);
+      border-radius: 24px;
+      padding: 28px;
+      overflow: hidden;
+    }
+
+    .schema-flow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+
+    .schema-box {
+      flex: 1;
+      min-width: 150px;
+      background: rgba(255,255,255,0.12);
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .arrow {
+      font-size: 1.7rem;
+      font-weight: bold;
+      color: #a9ef98;
+    }
+
+    .stats {
+      background: var(--green-dark);
+      color: var(--white);
+    }
+
+    .stats .section-title h2,
+    .stats .section-title p {
+      color: var(--white);
+    }
+
+    .stat-card {
+      text-align: center;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 28px;
+      border-radius: 20px;
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 2.2rem;
+      color: #a9ef98;
+      margin-bottom: 8px;
+    }
+
+    .two-columns {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    ul, ol {
+      padding-left: 20px;
+      margin-top: 10px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    .eco-box {
+      background: linear-gradient(135deg, #e8f6df, #ffffff);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .quiz {
+      background: #fffaf0;
+    }
+
+    .quiz-box {
+      max-width: 760px;
+      margin: auto;
+      background: var(--white);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 28px;
+      text-align: center;
+    }
+
+    .quiz-progress {
+      color: var(--green);
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .quiz-options {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .quiz-options button {
+      border: 2px solid var(--green-light);
+      background: #f8fff9;
+      padding: 13px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+
+    .quiz-options button:hover {
+      border-color: var(--green);
+      background: #eefbef;
+    }
+
+    #quiz-result {
+      margin-top: 18px;
+      font-weight: 800;
+      font-size: 1.05rem;
+    }
+
+    .sources {
+      background: var(--white);
+    }
+
+    .source-list {
+      columns: 2;
+      column-gap: 40px;
+    }
+
+    footer {
+      background: #0d2b1a;
+      color: var(--white);
+      padding: 35px 20px;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      nav {
+        align-items: flex-start;
+        gap: 12px;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        gap: 12px;
+        justify-content: flex-start;
+      }
+
+      .two-columns {
+        grid-template-columns: 1fr;
+      }
+
+      .arrow {
+        display: none;
+      }
+
+      .source-list {
+        columns: 1;
+      }
+
+      .brand-logo {
+        width: 54px;
+        height: 54px;
+        flex-basis: 54px;
+      }
+
+      .brand-text span {
+        display: none;
+      }
+
+      .hero-logo-frame {
+        height: 170px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="brand">
+        <div class="brand-logo">
+          <img src="logo.png" alt="Logo GreenDigest">
+        </div>
+        <div class="brand-text">
+          <strong>GreenDigest</strong>
+          <span>Transformons les déchets, créons l’avenir</span>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="#projet">Projet</a>
+        <a href="#fonctionnement">Fonctionnement</a>
+        <a href="#impact">Impact</a>
+        <a href="#eco">Économie</a>
+        <a href="#quiz">QCM</a>
+        <a href="#sources">Sources</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-logo-frame">
+          <img src="logo.png" alt="Logo GreenDigest">
+        </div>
+        <div class="badge">Projet Tech for Good</div>
+        <h1>Transformer les déchets en <span>énergie</span> et en fertilisant</h1>
+        <p>
+          GreenDigest est une unité industrielle imaginée pour valoriser les biodéchets grâce à la méthanisation.
+          Le but : produire du biogaz, créer un fertilisant naturel et réduire le volume de déchets organiques.
+        </p>
+        <div class="hero-buttons">
+          <a href="#projet" class="btn btn-primary">Découvrir le projet</a>
+          <a href="#fonctionnement" class="btn btn-secondary">Voir le processus</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="projet" class="problem">
+      <div class="container">
+        <div class="section-title">
+          <h2>Le projet en quelques mots</h2>
+          <p>
+            Chaque jour, des restes alimentaires, des fruits abîmés, des invendus ou des déchets agricoles sont jetés.
+            GreenDigest propose de les considérer comme une ressource plutôt que comme un simple déchet.
+          </p>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <div class="icon">🥕</div>
+            <h3>Des biodéchets collectés</h3>
+            <p>Restes alimentaires, déchets de cuisine, invendus, fruits et légumes abîmés ou déchets agricoles.</p>
+          </div>
+          <div class="card">
+            <div class="icon">🔥</div>
+            <h3>Du biogaz produit</h3>
+            <p>Le biogaz peut servir à produire de l’énergie, de la chaleur ou être transformé en biométhane.</p>
+          </div>
+          <div class="card">
+            <div class="icon">🌱</div>
+            <h3>Un fertilisant naturel</h3>
+            <p>Le digestat obtenu après méthanisation peut être utilisé pour enrichir les sols.</p>
+          </div>
+        </div>
+
+        <div class="highlight">
+          Problématique : comment valoriser les déchets organiques individuellement ou collectivement afin de réduire les déchets, produire de l’énergie et créer de l’engrais naturel ?
+        </div>
+      </div>
+    </section>
+
+    <section id="definition">
+      <div class="container two-columns">
+        <div>
+          <div class="section-title" style="text-align:left; margin-bottom:20px;">
+            <h2>Qu’est-ce que la méthanisation ?</h2>
+          </div>
+          <p>
+            La méthanisation est un procédé qui transforme la matière organique grâce à des micro-organismes,
+            dans un milieu sans oxygène. Cette transformation produit principalement deux éléments :
+            le biogaz et le digestat.
+          </p>
+          <ul>
+            <li><strong>Le biogaz</strong> contient surtout du méthane et du dioxyde de carbone.</li>
+            <li><strong>Le digestat</strong> est un résidu organique pouvant devenir un fertilisant naturel.</li>
+            <li>Le procédé fonctionne mieux avec des matières organiques riches en eau et faciles à dégrader.</li>
+          </ul>
+        </div>
+        <div class="eco-box">
+          <h3>Pourquoi c’est utile ?</h3>
+          <p>
+            Ce procédé permet de créer une boucle locale : les déchets sont collectés, transformés,
+            puis réutilisés sous forme d’énergie et de fertilisant. C’est un exemple concret d’économie circulaire.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="fonctionnement" class="process">
+      <div class="container">
+        <div class="section-title">
+          <h2>Comment fonctionne GreenDigest ?</h2>
+          <p>Le fonctionnement de l’unité peut être expliqué en 7 étapes simples.</p>
+        </div>
+
+        <div class="timeline">
+          <div class="step"><h3>Collecte</h3><p>Les biodéchets sont récupérés auprès des foyers, restaurants, cantines, agriculteurs ou supermarchés.</p></div>
+          <div class="step"><h3>Tri</h3><p>Les éléments non organiques sont retirés pour éviter de polluer le processus.</p></div>
+          <div class="step"><h3>Préparation</h3><p>Les déchets sont broyés et préparés avant d’être envoyés dans le méthaniseur.</p></div>
+          <div class="step"><h3>Méthanisation</h3><p>La matière organique se dégrade dans une cuve fermée, sans oxygène.</p></div>
+          <div class="step"><h3>Biogaz</h3><p>Le biogaz produit est stocké puis valorisé en énergie.</p></div>
+          <div class="step"><h3>Digestat</h3><p>Le résidu organique est récupéré puis traité si nécessaire.</p></div>
+          <div class="step"><h3>Valorisation</h3><p>L’énergie et le fertilisant sont réutilisés localement.</p></div>
+        </div>
+
+        <div class="schema">
+          <h3 style="margin-bottom:18px;">Schéma simplifié du processus</h3>
+          <div class="schema-flow">
+            <div class="schema-box">Biodéchets<br>🥦</div>
+            <div class="arrow">→</div>
+            <div class="schema-box">Méthaniseur<br>⚙️</div>
+            <div class="arrow">→</div>
+            <div class="schema-box">Biogaz<br>🔥</div>
+            <div class="arrow">+</div>
+            <div class="schema-box">Digestat<br>🌱</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="impact" class="stats">
+      <div class="container">
+        <div class="section-title">
+          <h2>Intérêt environnemental</h2>
+          <p>GreenDigest répond à plusieurs enjeux : moins de déchets, plus d’énergie renouvelable et une meilleure valorisation de la matière organique.</p>
+        </div>
+
+        <div class="grid">
+          <div class="stat-card">
+            <strong>63 Nm³</strong>
+            <p>de méthane environ peuvent être produits avec 1 tonne de biodéchets de cuisine.</p>
+          </div>
+          <div class="stat-card">
+            <strong>88,5 kg</strong>
+            <p>de CO₂ équivalent estimés en cas de fuites de méthane dans l’exemple étudié.</p>
+          </div>
+          <div class="stat-card">
+            <strong>40 %</strong>
+            <p>de réduction possible du volume du bac noir grâce au compostage, selon l’exemple cité dans le dossier.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="eco">
+      <div class="container two-columns">
+        <div>
+          <div class="section-title" style="text-align:left; margin-bottom:20px;">
+            <h2>Modèle économique</h2>
+          </div>
+          <p>
+            Le projet peut fonctionner avec plusieurs sources de revenus et d’économies. L’objectif est que le service soit utile à la fois pour les producteurs de déchets, les agriculteurs et les collectivités.
+          </p>
+          <ul>
+            <li>Vente du biogaz ou du biométhane.</li>
+            <li>Vente ou utilisation du fertilisant naturel.</li>
+            <li>Paiement du service de collecte par certains utilisateurs.</li>
+            <li>Réduction des coûts de traitement des déchets.</li>
+            <li>Aides publiques possibles pour les projets liés aux déchets et à l’économie circulaire.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Cadre juridique</h3>
+          <p>
+            Une installation de méthanisation est encadrée par la réglementation environnementale.
+            Elle peut relever de la rubrique ICPE 2781 et être soumise à déclaration, enregistrement ou autorisation selon la quantité de matières traitées.
+          </p>
+          <p style="margin-top:12px;">
+            Le projet doit aussi respecter les règles liées à l’urbanisme, à l’eau, à la sécurité du gaz et aux normes sanitaires.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="ecoconception" class="process">
+      <div class="container">
+        <div class="section-title">
+          <h2>Écoconception de l’unité</h2>
+          <p>Pour que le projet soit vraiment cohérent, il faut aussi penser à la manière de construire et d’utiliser l’installation.</p>
+        </div>
+        <div class="grid">
+          <div class="card"><h3>Matériaux durables</h3><p>Utiliser des matériaux résistants et réparables pour limiter l’impact de la construction.</p></div>
+          <div class="card"><h3>Collecte locale</h3><p>Réduire les transports en collectant les biodéchets à proximité de l’unité.</p></div>
+          <div class="card"><h3>Contrôle du méthane</h3><p>Surveiller les fuites de méthane, car elles peuvent augmenter fortement l’impact carbone.</p></div>
+          <div class="card"><h3>Valorisation locale</h3><p>Redistribuer le digestat aux agriculteurs ou jardiniers proches de l’installation.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="utilisateurs">
+      <div class="container">
+        <div class="section-title">
+          <h2>Qui peut utiliser GreenDigest ?</h2>
+          <p>Le projet peut concerner différents acteurs qui produisent ou utilisent des biodéchets.</p>
+        </div>
+        <div class="grid">
+          <div class="card"><div class="icon">🏠</div><h3>Foyers</h3><p>Ils réduisent leurs déchets organiques et participent à une solution locale.</p></div>
+          <div class="card"><div class="icon">🍽️</div><h3>Restaurants et cantines</h3><p>Ils valorisent leurs restes alimentaires au lieu de les jeter.</p></div>
+          <div class="card"><div class="icon">🛒</div><h3>Supermarchés</h3><p>Ils donnent une seconde utilité aux invendus non consommables.</p></div>
+          <div class="card"><div class="icon">🚜</div><h3>Agriculteurs</h3><p>Ils peuvent fournir des déchets agricoles et utiliser le fertilisant naturel.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz" class="quiz">
+      <div class="container">
+        <div class="section-title">
+          <h2>QCM - Teste tes connaissances</h2>
+          <p>Réponds aux 3 questions pour vérifier si tu as bien compris le projet.</p>
+        </div>
+        <div class="quiz-box">
+          <div class="quiz-progress" id="quiz-progress">Question 1 / 3</div>
+          <h3 id="quiz-question">Chargement...</h3>
+          <div class="quiz-options" id="quiz-options"></div>
+          <p id="quiz-result"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="compost" class="process">
+      <div class="container two-columns">
+        <div>
+          <div class="section-title" style="text-align:left; margin-bottom:20px;">
+            <h2>Tutoriel simple : réussir son compost</h2>
+          </div>
+          <ol>
+            <li>Mettre des déchets organiques : épluchures, marc de café, restes végétaux.</li>
+            <li>Ajouter des matières sèches : feuilles mortes, petits cartons non imprimés, brindilles.</li>
+            <li>Mélanger régulièrement pour aérer le compost.</li>
+            <li>Garder une humidité correcte : ni trop sec, ni trop mouillé.</li>
+            <li>Utiliser le compost mûr pour enrichir la terre.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Attention</h3>
+          <p>
+            Le compostage est complémentaire à la méthanisation. Il est plus simple à mettre en place à petite échelle,
+            alors que GreenDigest est pensé comme une unité plus industrielle ou territoriale.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="sources" class="sources">
+      <div class="container">
+        <div class="section-title">
+          <h2>Sources utilisées</h2>
+          <p>Les informations du site s’appuient sur les sources indiquées dans le dossier du projet.</p>
+        </div>
+        <ul class="source-list">
+          <li>ADEME : méthanisation, Base Carbone, économie circulaire.</li>
+          <li>Ministère de la Transition écologique : réglementation, définitions et filière biogaz.</li>
+          <li>ATEE : informations sur le biogaz et la méthanisation.</li>
+          <li>FranceAgriMer : bioéconomie et déchets agricoles.</li>
+          <li>SICTOM Sud Allier : compostage et réduction des déchets.</li>
+          <li>Code de l’environnement : cadre ICPE.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>GreenDigest</strong> — Transformons les déchets, créons l’avenir.</p>
+    <p>Projet pédagogique Tech for Good</p>
+  </footer>
+
+  <script>
+    const quizData = [
+      {
+        question: "1. Que produit principalement la méthanisation ?",
+        options: [
+          "Du plastique et du verre",
+          "Du biogaz et du digestat",
+          "Du pétrole et du charbon",
+          "De l’eau potable"
+        ],
+        answer: 1
+      },
+      {
+        question: "2. Quel type de déchets est utilisé dans le projet GreenDigest ?",
+        options: [
+          "Des déchets organiques",
+          "Des déchets métalliques",
+          "Des déchets électroniques",
+          "Des déchets nucléaires"
+        ],
+        answer: 0
+      },
+      {
+        question: "3. À quoi peut servir le digestat ?",
+        options: [
+          "À fabriquer du béton",
+          "À enrichir les sols comme fertilisant naturel",
+          "À remplacer les panneaux solaires",
+          "À produire du plastique"
+        ],
+        answer: 1
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById("quiz-question");
+    const optionsEl = document.getElementById("quiz-options");
+    const resultEl = document.getElementById("quiz-result");
+    const progressEl = document.getElementById("quiz-progress");
+
+    function loadQuestion() {
+      const q = quizData[currentQuestion];
+      progressEl.textContent = `Question ${currentQuestion + 1} / ${quizData.length}`;
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = "";
+      resultEl.textContent = "";
+
+      q.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.onclick = () => checkAnswer(index);
+        optionsEl.appendChild(button);
+      });
+    }
+
+    function checkAnswer(selectedIndex) {
+      if (selectedIndex === quizData[currentQuestion].answer) {
+        score++;
+      }
+
+      currentQuestion++;
+
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        showFinalResult();
+      }
+    }
+
+    function showFinalResult() {
+      questionEl.textContent = "QCM terminé !";
+      optionsEl.innerHTML = "";
+      progressEl.textContent = "Résultat final";
+      resultEl.textContent = `Tu as obtenu ${score} / ${quizData.length} bonnes réponses.`;
+      resultEl.style.color = score >= 2 ? "#2f8f46" : "#b03a2e";
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
